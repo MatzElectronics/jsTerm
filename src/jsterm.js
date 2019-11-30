@@ -198,7 +198,6 @@ function jsTerm(terminalContainerElement, outputCallback, options) {
     sound.type     = 'audio/wav';
     document.getElementsByTagName('body')[0].appendChild(sound);
 
-    // 
     /**
      * 
      * @function resizeTerminal This is called autmatically during initialization 
@@ -368,8 +367,7 @@ function jsTerm(terminalContainerElement, outputCallback, options) {
     
         c = parseInt(c);
     
-        // FIXME: Convert the values evaluated in the switch statement to constants
-        // to make this code more readable.
+        // TODO: Document each special character within this file.
         // https://www.parallax.com/portals/0/help/BASICStamp/PBASIC click on Debug
         switch (termSetCursor) {
             case 3:
@@ -391,7 +389,6 @@ function jsTerm(terminalContainerElement, outputCallback, options) {
             case 0:
                 // fall through
             default:
-                // TODO: Null is important to Parallax - Ask Jeff
                 switch (c) {
                     case 127:
                         // fall through
@@ -486,6 +483,7 @@ function jsTerm(terminalContainerElement, outputCallback, options) {
                         changeCursor(1, 0);
                         break;
                 }
+                break;
         }
     
         if (c === 0) {
