@@ -35,7 +35,7 @@
  * @param {string} options.warningDivClassName optional - CSS class to apply to the overrun warning element.  A default Bootstrap-v3-like 'danger' class is used if none is provided.
  * @param {boolean} options.scrollToCursor optional - if set to true, automatically scroll to the cursor's location.  Only applies to the vertical scroll.  Default is true.
  */
-function propTerm(terminalContainerElement, outputCallback, options) {
+function jsTerm(terminalContainerElement, outputCallback, options) {
 
     // Read the color styles from the terminal element to use in 
     // the inverted color styles for the visual beep
@@ -45,58 +45,58 @@ function propTerm(terminalContainerElement, outputCallback, options) {
 
     // set the scrolling and text alignment
     var sheet = window.document.styleSheets[0];
-    var propTermCSStext = '';
-    propTermCSStext =  '.propTerm_ {';
-    propTermCSStext += 'vertical-align: text-top;';
-    propTermCSStext += 'overflow-y: scroll;';
-    propTermCSStext += 'overflow-x: scroll;';
-    propTermCSStext += '}';
-    sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+    var jsTermCSStext = '';
+    jsTermCSStext =  '.jsTerm_ {';
+    jsTermCSStext += 'vertical-align: text-top;';
+    jsTermCSStext += 'overflow-y: scroll;';
+    jsTermCSStext += 'overflow-x: scroll;';
+    jsTermCSStext += '}';
+    sheet.insertRule(jsTermCSStext, sheet.cssRules.length);
 
     // remove the focus ring (since the cursor indicates focus)
     sheet = window.document.styleSheets[0];
-    propTermCSStext =  '.propTerm_:focus {';
-    propTermCSStext += 'outline-width: 0;';
-    propTermCSStext += '}';
-    sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+    jsTermCSStext =  '.jsTerm_:focus {';
+    jsTermCSStext += 'outline-width: 0;';
+    jsTermCSStext += '}';
+    sheet.insertRule(jsTermCSStext, sheet.cssRules.length);
     
     // create a visual-beep animation class that inverts colors
     sheet = window.document.styleSheets[0];
-    propTermCSStext =  '.visual-beep_ {';
-    propTermCSStext += 'animation-name: vbeep_;';
-    propTermCSStext += 'animation-duration: .25s;';
-    propTermCSStext += '}';
-    sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+    jsTermCSStext =  '.visual-beep_ {';
+    jsTermCSStext += 'animation-name: vbeep_;';
+    jsTermCSStext += 'animation-duration: .25s;';
+    jsTermCSStext += '}';
+    sheet.insertRule(jsTermCSStext, sheet.cssRules.length);
     
     // provide animation keyframes for the visual beep class
     sheet = window.document.styleSheets[0];
-    propTermCSStext =  '@keyframes vbeep_ {';
-    propTermCSStext += '0% {';
-    propTermCSStext += 'background: ' + terminalTextColor + ';';
-    propTermCSStext += 'color: ' + terminalBkgColor + ';';
-    propTermCSStext += '}';
-    propTermCSStext += '100% {';
-    propTermCSStext += 'background: ' + terminalBkgColor + ';';
-    propTermCSStext += 'color: ' + terminalTextColor + ';';
-    propTermCSStext += '}';
-    propTermCSStext += '}';
-    sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+    jsTermCSStext =  '@keyframes vbeep_ {';
+    jsTermCSStext += '0% {';
+    jsTermCSStext += 'background: ' + terminalTextColor + ';';
+    jsTermCSStext += 'color: ' + terminalBkgColor + ';';
+    jsTermCSStext += '}';
+    jsTermCSStext += '100% {';
+    jsTermCSStext += 'background: ' + terminalBkgColor + ';';
+    jsTermCSStext += 'color: ' + terminalTextColor + ';';
+    jsTermCSStext += '}';
+    jsTermCSStext += '}';
+    sheet.insertRule(jsTermCSStext, sheet.cssRules.length);
 
     // Add a default class for the warning text box
     sheet = window.document.styleSheets[0];
-    propTermCSStext =  '.warning-text_ {';
-    propTermCSStext += 'font-size: 11px;';
-    propTermCSStext += 'background-color: #f2dede;';
-    propTermCSStext += 'border: 1px solid rgb(235, 204, 209);';
-    propTermCSStext += 'border-radius: 4px;';
-    propTermCSStext += 'margin-bottom: 5px;';
-    propTermCSStext += 'padding: 3px;';
-    propTermCSStext += 'color:rgb(169, 68, 66);';
-    propTermCSStext += '}';
-    sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+    jsTermCSStext =  '.warning-text_ {';
+    jsTermCSStext += 'font-size: 11px;';
+    jsTermCSStext += 'background-color: #f2dede;';
+    jsTermCSStext += 'border: 1px solid rgb(235, 204, 209);';
+    jsTermCSStext += 'border-radius: 4px;';
+    jsTermCSStext += 'margin-bottom: 5px;';
+    jsTermCSStext += 'padding: 3px;';
+    jsTermCSStext += 'color:rgb(169, 68, 66);';
+    jsTermCSStext += '}';
+    sheet.insertRule(jsTermCSStext, sheet.cssRules.length);
 
-    // add the propTerm_ class to the element
-    terminalContainerElement.classList.add("propTerm_");
+    // add the jsTerm_ class to the element
+    terminalContainerElement.classList.add("jsTerm_");
     
     var bufferAlert = false;
     var terminalBuffer = '';
