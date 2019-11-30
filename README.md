@@ -1,2 +1,2 @@
 # jsTerm
-Simple, lightweight in-browser terminal
+A simple, generic in-browser terminal with cursor positioning, clearing, and text-wrapping support
