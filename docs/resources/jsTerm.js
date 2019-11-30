@@ -34,6 +34,7 @@
  * @param {string} options.overrunWarningText optional - text to display if the browser is unable to keep up with the display of incoming characters.  A default warning in American English is used if none is provided.
  * @param {string} options.warningDivClassName optional - CSS class to apply to the overrun warning element.  A default Bootstrap-v3-like 'danger' class is used if none is provided.
  * @param {boolean} options.scrollToCursor optional - if set to true, automatically scroll to the cursor's location.  Only applies to the vertical scroll.  Default is true.
+ * @param {number} options.tabIndex optional - set the tab index of the HTML element that contains the terminal.  Default is "1".
  */
 function jsTerm(terminalContainerElement, outputCallback, options) {
 
@@ -155,6 +156,12 @@ function jsTerm(terminalContainerElement, outputCallback, options) {
     var terminalPixelsHigh;
     var terminalLineHeight;
 
+    // set the tabindex of the HTML element to make it editable.
+    var tabIndex = 1;
+    if (options && options.tabIndex) {
+        tabIndex = options.tabIndex;
+    }
+    terminalContainerElement.setAttribute("tabindex", tabIndex.toString(10));
 
     var overrunWarningText = 'Your program is sending too much data to the terminal at once.<br>Try adding pauses or sending less data.';
     if (options && options.overrunWarningText) {
