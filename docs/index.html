@@ -5,6 +5,13 @@
     <script type="text/javascript" src="../src/jsTerm.js"></script>  
   </head>
   <body>
-    Hello World.
+    <h2>jsTerm Example</h2>
+    <div id="terminal"></div>
+    <textarea id="output"></textarea>
+    <script>
+      var term = new jsTerm(document.getElementById('terminal'), function(characterToSend) {
+        document.getElementById('output').value += characterToSend;   
+      });
+    </script>
   <body>
 </html>
