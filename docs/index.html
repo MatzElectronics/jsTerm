@@ -29,14 +29,22 @@
 
     <div id="terminal"></div>
 
-    <textarea id="output"></textarea>
+    <div id="output"></div>
     <script>
       var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
+        var outputElement = document.getElementById('output');
         for (var i = 0; i < characterToSend.length; i++) {
           if (characterToSend.charCodeAt(0) < 32 || characterToSend.charCodeAt(0) > 126) {
-            document.getElementById('output').value += '[' + characterToSend.charCodeAt(0).toString(10) + ']';
+            var outputString = '[' + characterToSend.charCodeAt(0).toString(10) + ']';
+            outputElement.innerText += outputString;
+            setTimeout(function () {
+              outputElement.innerText = outputElement.innerText.substr(outputString.length);
+            }, 1000);            
           } else {
-            document.getElementById('output').value += characterToSend[i];
+            outputElement.innerText += characterToSend[i];
+            setTimeout(function () {
+              outputElement.innerText = outputElement.innerText.substr(1);
+            }, 1000);
           }
         }
            
