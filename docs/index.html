@@ -21,10 +21,7 @@
     <input type="text" id="send-string"/>
     <button id="send-string-btn">send text to terminal</button>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <select id="send-ascii">
-      <option value="0">0 - NULL</option>
-      <option value="7">7 - BELL</option>
-    </select>
+    <input type="text" id="send-ascii" size="4" value="0"/>
     <button id="send-ascii-btn">send ASCII character to terminal</button>
 
     <div id="terminal"></div>
@@ -54,6 +51,17 @@
         var textInput = document.getElementById('send-string');
         term.display(textInput.value.replace(/\\r/g, '\r').replace(/\\n/g, '\n'));
         textInput.value = '';
+      });
+      
+      document.getElementById('send-ascii').addEventListener('change', function () {
+        var charInput = document.getElementById('send-ascii');
+        var numberValue = charInput.value.replace(/[^0-9]*/g, '');
+        if (numberValue.length < 1) {
+          charInput.value = '0';
+        }
+        if (parseInt(numberValue) > 255) {
+          charInput.value = 255; 
+        }
       });
       
       document.getElementById('send-ascii-btn').addEventListener('click', function () {
