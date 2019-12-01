@@ -9,7 +9,7 @@
           font-size: 13px;
           font-family: Andale Mono, Droid Sans Mono, Consolas, monospace;
           color: white;
-          width: 480px;
+          width: 420px;
           height: 360px;
           line-height: 110%;
           border: 2px solid black;
@@ -18,15 +18,23 @@
   </head>
   <body>
     <h2>uTerm Example</h2>
-    <input type="text" id="send-string"/>
-    <button id="send-string-btn">send text to terminal</button>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <input type="text" id="send-ascii" size="4" value="0"/>
-    <button id="send-ascii-btn">send ASCII character to terminal</button>
+    <table>
+      <tr>
+        <td>
+          <div id="terminal"></div>
+        </td>
+        <td style="background:url('chipArrows.png')">
+          <input type="text" id="send-string"/>
+          <button id="send-string-btn">send text to terminal</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="text" id="send-ascii" size="4" value="0"/>
+          <button id="send-ascii-btn">send ASCII character to terminal</button>
 
-    <div id="terminal"></div>
+          <div id="output"></div>  
+        </td>
+      </tr>
+    </table>
 
-    <div id="output"></div>
     <script>
       var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
         var outputElement = document.getElementById('output');
