@@ -53,14 +53,14 @@
         textInput.value = '';
       });
       
-      document.getElementById('send-ascii').addEventListener('change', function () {
+      document.getElementById('send-ascii').addEventListener('keypress', function () {
         var charInput = document.getElementById('send-ascii');
-        var numberValue = charInput.value.replace(/[^0-9]*/g, '');
-        if (numberValue.length < 1) {
+        charInput.value = charInput.value.replace(/[^0-9]*/g, '');
+        if (charInput.value.length < 1) {
           charInput.value = '0';
         }
-        if (parseInt(numberValue) > 255) {
-          charInput.value = 255; 
+        if (parseInt(charInput.value) > 255) {
+          charInput.value = '255'; 
         }
       });
       
