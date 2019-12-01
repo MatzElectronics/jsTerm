@@ -1,8 +1,8 @@
 <html>
   <head>
-    <title>jsTerm Example</title>
+    <title>uTerm Example</title>
     <link href="resources/style.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="resources/jsTerm.js"></script> 
+    <script type="text/javascript" src="resources/uTerm.js"></script> 
     <style>
       #terminal {
           background: black;
@@ -17,11 +17,11 @@
     </style>
   </head>
   <body>
-    <h2>jsTerm Example</h2>
+    <h2>uTerm Example</h2>
     <div id="terminal"></div>
     <textarea id="output"></textarea>
     <script>
-      var term = new jsTerm(document.getElementById('terminal'), function(characterToSend) {
+      var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
         document.getElementById('output').value += characterToSend;   
       });
     </script>
