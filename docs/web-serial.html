@@ -128,7 +128,7 @@ async function readLoop() {
 	while (true) {
 	  const { value, done } = await reader.read();
 	  if (value) {
-	    term(value);
+	    term.display(value);
 	  }
 	  if (done) {
 	    console.log('[readLoop] DONE', done);
