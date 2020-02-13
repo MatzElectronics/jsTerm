@@ -1,6 +1,6 @@
 <html>
   <head>
-      <title>uTerm Example</title>
+      <title>Web-serial API Terminal Example</title>
       <link href="resources/style.css" rel="stylesheet" type="text/css" />
       <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet">
       <script type="text/javascript" src="resources/uterm.js"></script>
@@ -20,7 +20,11 @@
   </head>
 
   <body>
-      <h2>uTerm Example</h2>
+      <h2>Web-serial API Terminal Example</h2>
+      Any characters that are recieved by the browser from a 
+      connected serial device will be displayed in the box below.  
+      To send characters from the browser to the connected device, 
+      simply click into the box below and begin typing.
       <div id="terminal"></div>
       <button id="connect-serial">Connect</button>
       <input id="baudrate_input" value="115200" />
