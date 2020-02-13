@@ -1,89 +1,75 @@
 <html>
-  <head>
-    <title>uTerm Example</title>
-    <link href="resources/style.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="resources/uterm.js"></script> 
-    <script>
-    
-    </script>
-    <style>
-      #terminal {
-          background: black;
-          font-size: 13px;
-          font-family: Andale Mono, Droid Sans Mono, Consolas, monospace;
-          color: white;
-          width: 420px;
-          height: 360px;
-          line-height: 110%;
-          border: 2px solid black;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>uTerm Example</h2>
-          <div id="terminal"></div>
-          <button id="connect-serial">Connect</button>
-<input id="baudrate_input" value="115200" />
-
-    <script>
-       let reader = {};
-let writer = {};
-	var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
-      	writer.write(characterToSend);
-       });
-      
-      document.getElementById('connect-serial').addEventListener('click', clickConnect);
-	    
-
-async function connect(baud) {
-	// - Request a port and open a connection.
-	port = await navigator.serial.requestPort();
-	// - Wait for the port to open.
-	await port.open({ baudrate: baud });
-
-	const decoder = new TextDecoderStream();
-	const inputDone = port.readable.pipeTo(decoder.writable);
-	const inputStream = decoder.readable;
-
-	reader = inputStream.getReader();
-
-	const encoder = new TextEncoderStream();
-	const outputDone = encoder.readable.pipeTo(port.writable);
-	const outputStream = encoder.writable;
-
-	writer = outputStream.getWriter();
-
-}
-
-async function clickConnect() {
-	// Call to the button to .
-	let baud = document.getElementById('baudrate_input').value || '115200';
-	await connect(parseInt(baud));
-	await readLoop();
-}
-
-
-
-// CODELAB: Add code to read the stream here.
-
-
-
-async function readLoop() {
-
-	// CODELAB: Add read loop here.
-	while (true) {
-	  const { value, done } = await reader.read();
-	  if (value) {
-	    term.display(value);
-	  }
-	  if (done) {
-	    console.log('[readLoop] DONE', done);
-	    reader.releaseLock();
-	    break;
-	  }
-	}
-}
-
-    </script>
-  <body>
+   <head>
+      <title>uTerm Example</title>
+      <link href="resources/style.css" rel="stylesheet" type="text/css" />
+      <script type="text/javascript" src="resources/uterm.js"></script> 
+      <style>
+         #terminal {
+			 background: #00c;
+			 font-size: 12px;
+			 font-family: Andale Mono, Droid Sans Mono, Consolas, monospace;
+			 color: #ffc;
+			 width: 600px;
+			 height: 450px;
+			 line-height: 110%;
+			 border: 2px solid black;
+         }
+      </style>
+   </head>
+   <body>
+      <h2>uTerm Example</h2>
+      <div id="terminal"></div>
+      <button id="connect-serial">Connect</button>
+      <input id="baudrate_input" value="115200" />
+      <script>
+         let reader = {};
+         let writer = {};
+         var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
+         	writer.write(characterToSend);
+         });
+         
+         document.getElementById('connect-serial').addEventListener('click', clickConnect);
+         
+         
+         async function connect(baud) {
+         	// - Request a port and open a connection.
+         	port = await navigator.serial.requestPort();
+         	// - Wait for the port to open.
+         	await port.open({ baudrate: baud });
+         
+         	const decoder = new TextDecoderStream();
+         	const inputDone = port.readable.pipeTo(decoder.writable);
+         	const inputStream = decoder.readable;
+         
+         	reader = inputStream.getReader();
+         
+         	const encoder = new TextEncoderStream();
+         	const outputDone = encoder.readable.pipeTo(port.writable);
+         	const outputStream = encoder.writable;
+         
+         	writer = outputStream.getWriter();
+         }
+         
+         async function clickConnect() {
+         	let baud = document.getElementById('baudrate_input').value || '115200';
+         	await connect(parseInt(baud));
+         	await readLoop();
+         }
+         
+         async function readLoop() {
+  			 while (true) {
+				 const { value, done } = await reader.read();
+				 if (value) {
+				 	term.display(value);
+				 }
+				 if (done) {
+					 console.log('[readLoop] DONE', done);
+					 reader.releaseLock();
+					 break;
+				 }
+			 }
+         }
+         
+      </script>
+	<body>
 </html>
