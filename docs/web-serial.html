@@ -40,10 +40,6 @@
 
   <body>
       <h2>Web-serial API Terminal Example</h2>
-      Any characters that are recieved by the browser from a 
-      connected serial device will be displayed in the box below.  
-      To send characters from the browser to the connected device, 
-      simply click into the box below and begin typing.
       <div id="terminal-container">
           <div id="terminal"></div>
           <button id="connect-serial">Connect</button>
@@ -101,6 +97,11 @@
                   }
               }
           }
+        
+          term.display('Any characters that are recieved by the browser from a ' +
+              'connected serial device will be displayed in this terminal. ' +
+              'To send characters from this terminal to the connected device, ' +
+              'simply click me and begin typing.');
       </script>
   </body>
 </html>
