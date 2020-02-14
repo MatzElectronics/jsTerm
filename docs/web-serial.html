@@ -50,7 +50,9 @@
           let reader = {};
           let writer = {};
           var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
-              writer.write(characterToSend);
+              if (writer && writer.write) {
+                  writer.write(characterToSend);
+              }
           });
 
           document.getElementById('connect-serial').addEventListener('click', clickConnect);
@@ -98,11 +100,10 @@
               }
           }
         
-          term.display('Any characters that are recieved by the\r' +
-                       'browser from a connected serial device will\r' +
-                       'be displayed in this terminal. \r' +
-                       'To send characters from this terminal to the\r' +
-                       'connected device, simply click me and begin typing.\r\r');
+          term.display('Any characters that are recieved by the browser from a connected \r' +
+                       'serial device will be displayed in this terminal. \r\r' +
+                       'Click "Connect" below to connect to a serial device. To send characters from\r' +
+                       'this terminal to the connected device, simply click me and begin typing.\r\r');
       </script>
   </body>
 </html>
