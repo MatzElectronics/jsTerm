@@ -16,28 +16,24 @@
               line-height: 110%;
               border: none;
               padding: 2px;
+          }
+          #terminal-container {
+              padding: 0px;
+              margin: 0px;
+              border: none;
               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
           }
-          #terminal::-webkit-scrollbar {
-              background-color: rgba(100,100,100,0);
-              outline: none;
-          }
-                  #terminal::-webkit-scrollbar-track {
-              background-color: rgba(100,100,100,0);
-              outline: none;
-          }
-          #terminal::-webkit-scrollbar-track-piece {
+          #terminal::-webkit-scrollbar 
+          #terminal::-webkit-scrollbar-track 
+          #terminal::-webkit-scrollbar-track-piece 
+          #terminal::-webkit-scrollbar-corner {
               background-color: rgba(100,100,100,0);
               outline: none;
           }         
-        #terminal::-webkit-scrollbar-thumb {
-              background-color: rgba(255,255,255,0.5);
+          #terminal::-webkit-scrollbar-thumb {
+              background-color: rgba(255,255,255,0.4);
               outline: none;
-          }
-        #terminal::scrollbar-corner{
-              background-color: rgba(100,100,100,0);
-              outline: none;
-          }      
+          }     
 
       </style>
   </head>
@@ -48,9 +44,12 @@
       connected serial device will be displayed in the box below.  
       To send characters from the browser to the connected device, 
       simply click into the box below and begin typing.
-      <div id="terminal"></div>
-      <button id="connect-serial">Connect</button>
-      <input id="baudrate_input" value="115200" />
+      <div id="terminal-container">
+          <div id="terminal"></div>
+          <button id="connect-serial">Connect</button>
+          <input id="baudrate_input" value="115200" />
+      </div>
+
       <script>
           let reader = {};
           let writer = {};
