@@ -160,7 +160,7 @@
 
               // Close the output stream.
               if (writer) {
-                await writer.getWriter().close();
+                await writer.close();
                 await outputDone;
                 outputStream = null;
                 outputDone = null;
