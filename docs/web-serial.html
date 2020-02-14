@@ -120,11 +120,11 @@
               if (!port) {
                   let baud = document.getElementById('baudrate-input').value || '115200';
                   await connect(parseInt(baud));
-                  await readLoop();
                   document.getElementById('connect-serial').innerHTML = 'Disconnect';
                   document.getElementById('baudrate-display').innerHTML = baud;
                   document.getElementById('baudrate-input').style.display = 'none';
                   document.getElementById('baudrate-display').style.display = 'inline';
+                  await readLoop();
               } else {
                   await disconnect();
                   document.getElementById('connect-serial').innerHTML = 'Connect';
