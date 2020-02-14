@@ -38,7 +38,7 @@
               outline: none;
           }     
 
-          button {
+          #connect-serial {
               font-size: 14px;
               border: none;
               border-radius: 5px;
@@ -51,10 +51,10 @@
               padding: 8px 20px;
               box-shadow: 2px 2px 7px 0px rgba(0, 0, 0, 0.3);
           }
-          button:hover {
+          #connect-serial:hover {
               background-color: rgba(9,0,160,1);
           }
-          #baudrate_input {
+          #baudrate-input {
               padding: 8px 18px;
               margin: 8px 0;
               display: inline-block;
@@ -74,12 +74,19 @@
       <div id="terminal-container">
           <div id="terminal"></div>
           <button id="connect-serial">Connect</button>
-          <input id="baudrate_input" value="115200" />
+          <input id="baudrate-input" value="115200" />
+          <span id="baudrate-display" style="display:none;"></span>
       </div>
 
       <script>
-          let reader = {};
-          let writer = {};
+          let port = null;
+          let reader = null;
+          let writer = null;
+          let inputDone = null;
+          let inputStream = null;
+          let outputStream = null;
+          let outputDone = null;
+        
           var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
               if (writer && writer.write) {
                   writer.write(characterToSend);
@@ -96,23 +103,34 @@
                   baudrate: baud
               });
 
-              const decoder = new TextDecoderStream();
-              const inputDone = port.readable.pipeTo(decoder.writable);
-              const inputStream = decoder.readable;
+              let decoder = new TextDecoderStream();
+              inputDone = port.readable.pipeTo(decoder.writable);
+              inputStream = decoder.readable;
 
               reader = inputStream.getReader();
 
-              const encoder = new TextEncoderStream();
-              const outputDone = encoder.readable.pipeTo(port.writable);
-              const outputStream = encoder.writable;
+              let encoder = new TextEncoderStream();
+              outputDone = encoder.readable.pipeTo(port.writable);
+              outputStream = encoder.writable;
 
               writer = outputStream.getWriter();
           }
 
           async function clickConnect() {
-              let baud = document.getElementById('baudrate_input').value || '115200';
-              await connect(parseInt(baud));
-              await readLoop();
+              if (!port) {
+                  let baud = document.getElementById('baudrate-input').value || '115200';
+                  await connect(parseInt(baud));
+                  await readLoop();
+                  document.getElementById('connect-serial').innerTHML = 'Disconnect';
+                  document.getElementById('baudrate-display').innerHTML = baud;
+                  document.getElementById('baudrate-input').style.display = 'none';
+                  document.getElementById('baudrate-display').style.display = 'inline';
+              } else {
+                  await disconnect();
+                  document.getElementById('connect-serial').innerTHML = 'Connect';
+                  document.getElementById('baudrate-input').style.display = 'inline';
+                  document.getElementById('baudrate-display').style.display = 'none';
+              }
           }
 
           async function readLoop() {
@@ -129,6 +147,27 @@
                       break;
                   }
               }
+          }
+        
+          async disconnect() {
+              // Close the input stream (reader).
+              if (reader) {
+                await reader.cancel();
+                await inputDone.catch(() => {});
+                reader = null;
+                inputDone = null;
+              }
+
+              // Close the output stream.
+              if (writer) {
+                await writer.getWriter().close();
+                await outputDone;
+                outputStream = null;
+                outputDone = null;
+              }
+
+              await port.close();
+              port = null;
           }
         
           term.display('Any characters that are recieved by the browser from a connected \r' +
