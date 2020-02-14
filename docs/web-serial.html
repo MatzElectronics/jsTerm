@@ -149,7 +149,7 @@
               }
           }
         
-          async disconnect() {
+          async function disconnect() {
               // Close the input stream (reader).
               if (reader) {
                 await reader.cancel();
