@@ -87,7 +87,7 @@
           let outputStream = null;
           let outputDone = null;
         
-          var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
+          var term = new Uterm(document.getElementById('terminal'), function(characterToSend) {
               if (writer && writer.write) {
                   writer.write(characterToSend);
               }
