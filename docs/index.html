@@ -23,7 +23,7 @@
         <td>
           <div id="terminal"></div>
         </td>
-        <td style="background:url('chipArrows.png')">
+        <td style="background:url('chipArrows.png'); background-repeat:no-repeat;">
           <input type="text" id="send-string"/>
           <button id="send-string-btn">send text to terminal</button>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -36,7 +36,7 @@
     </table>
 
     <script>
-      var term = new uTerm(document.getElementById('terminal'), function(characterToSend) {
+      var term = new Uterm(document.getElementById('terminal'), function(characterToSend) {
         var outputElement = document.getElementById('output');
         for (var i = 0; i < characterToSend.length; i++) {
           if (characterToSend.charCodeAt(0) < 32 || characterToSend.charCodeAt(0) > 126) {
