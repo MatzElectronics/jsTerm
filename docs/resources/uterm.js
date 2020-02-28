@@ -194,7 +194,7 @@ class Uterm {
         if (!document.getElementById('term-beep_')) {
             // add the terminal beep this.sound to the end of the HTML body.
             let sound      = document.createElement('audio');
-            this.sound.style.display = 'none';
+            sound.style.display = 'none';
             sound.id       = 'term-beep_';
 
             // If present, the browser will offer controls to allow the user
