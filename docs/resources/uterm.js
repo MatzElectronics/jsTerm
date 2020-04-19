@@ -45,7 +45,9 @@ class Uterm {
         this.echo = {
             keys: true,
             trap: false,
-            buffer: []
+            buffer: [],
+            trapCRLF: true,
+            lastChar: null
         };
         this.cursor = {
             x: 0,            // horizontal position
@@ -95,6 +97,9 @@ class Uterm {
             }
             if (options.tabSpacing && !isNaN(options.tabSpacing) && options.tabSpacing > 1) {
                 this.size.tabSpacing = options.tabSpacing;
+            }
+            if (options.trapCRLF) {
+                this.echo.trapCRLF = options.trapCRLF;
             }
         }
 
@@ -424,9 +429,12 @@ class Uterm {
                         }
                         // fall through
                     case 13:  // Carriage Return
-                        // fall through
-                    case 10:  // Line Feed
                         this._changeCursor(0, 1);
+                        break;
+                    case 10:  // Line Feed
+                        if (!(this.echo.trapCRLF && this.echo.lastChar === 13)) {
+                            this._changeCursor(0, 1);
+                        }
                         break;
                     case 9:   // Tab (default 5-character spacing)
                         j = 5 - (this.cursor.x) % this.size.tabSpacing;
@@ -496,6 +504,7 @@ class Uterm {
                         this._changeCursor(1, 0);
                         break;
                 }
+                this.echo.lastChar = c;
         }
     
         // If the character was not used to define a new cursor 
