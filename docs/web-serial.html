@@ -76,9 +76,11 @@
           <button id="connect-serial">Connect</button>
           <input id="baudrate-input" class="input-box" value="115200" />
           <span id="baudrate-display" style="display:none;"></span>
-          <input id="character-input" class="input-box" style="width: 40px;" value="3" />
-          <button id="connect-serial">Send ASCII</button>
-          <button id="connect-serial" onclick="term.display(null);">Clear</button>
+          &nbsp;&nbsp;
+          <button id="character-send">Send ASCII</button>
+          <input id="character-input" class="input-box" style="width: 100px;" value="3" />
+          &nbsp;&nbsp;
+          <button id="clear-terminal" onclick="term.display(null);">Clear</button>
       </div>
 
       <script>
@@ -97,6 +99,19 @@
           });
 
           document.getElementById('connect-serial').addEventListener('click', clickConnect);
+          document.getElementById('character-send').addEventListener('click', sendCharacter);
+          document.getElementById('clear-terminal').addEventListener('click', function() {term.display(null);});
+        
+          function sendCharacter() {
+              if (writer && writer.write) {
+                  let chars = document.getElementById('character-input').value.split(',')
+                  for (let i = 0; i < chars.length; i++) {
+                      if (chars[i] && Number(chars[i]) !== isNaN) {
+                          writer.write(String.charCodeFrom(Number(chars[i])));
+                      }
+                  }
+              }
+          }
 
           async function connect(baud) {
               // - Request a port and open a connection.
