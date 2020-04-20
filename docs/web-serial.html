@@ -65,6 +65,9 @@
               font-weight: 600;
               font-size: 14px;
           }
+          .right-side {
+              float: right;
+          }
         
       </style>
   </head>
@@ -80,10 +83,11 @@
           <button id="character-send" class="btn">Send ASCII</button>
           <input id="character-input" class="input-box" style="width: 80px;" value="3" />
           &nbsp;&nbsp;
-          <button id="clear-terminal" class="btn">Clear</button>
-          <button id="toggle-echo" class="btn">Disable Echo</button>
+          <button id="clear-terminal" class="btn right-side">Clear</button>
+          <button id="toggle-echo" class="btn right-side">Disable Echo</button>
           <br>
-          <input id="text-to-send" class="input-box" placeholder="text to send..." style="margin-left: 10px; width: calc(100% - 110px);">
+          <input id="text-to-send" class="input-box" placeholder="text to send..." style="margin-left: 10px; width: calc(100% - 250px);">
+          <button id="send-text-cr" class="btn">Send+CR</button>
           <button id="send-text" class="btn">Send</button>
       </div>
 
@@ -107,6 +111,7 @@
           document.getElementById('clear-terminal').addEventListener('click', function() {term.display(null);});
           document.getElementById('toggle-echo').addEventListener('click', toggleEcho);
           document.getElementById('send-text').addEventListener('click', sendText);
+          document.getElementById('send-text-cr').addEventListener('click', function() {sendText(13);});
         
           function sendCharacter() {
               if (writer && writer.write) {
@@ -119,9 +124,9 @@
               }
           }
 
-          function sendText() {
+          function sendText(c) {
                if (writer && writer.write) {
-                  writer.write(document.getElementById('text-to-send').value);
+                  writer.write(document.getElementById('text-to-send').value + (c ? String.fromCharCode(c) : ''));
               }             
           }
         
