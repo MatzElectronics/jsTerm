@@ -54,7 +54,7 @@
           #connect-serial:hover {
               background-color: rgba(9,0,160,1);
           }
-          #baudrate-input {
+          .input-box {
               padding: 8px 18px;
               margin: 8px 0;
               display: inline-block;
@@ -74,8 +74,11 @@
       <div id="terminal-container">
           <div id="terminal"></div>
           <button id="connect-serial">Connect</button>
-          <input id="baudrate-input" value="115200" />
+          <input id="baudrate-input" class="input-box" value="115200" />
           <span id="baudrate-display" style="display:none;"></span>
+          <input id="character-input" class="input-box" style="width: 40px;" value="3" />
+          <button id="connect-serial">Send ASCII</button>
+          <button id="connect-serial" onclick="term.display(null);">Clear</button>
       </div>
 
       <script>
