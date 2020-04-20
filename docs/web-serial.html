@@ -82,6 +82,9 @@
           &nbsp;&nbsp;
           <button id="clear-terminal" class="btn">Clear</button>
           <button id="toggle-echo" class="btn">Disable Echo</button>
+          <br>
+          <input id="text-to-send" class="input-box" placeholder="text to send..." style="margin-left: 10px; width: calc(100% - 110px);">
+          <button id="send-text" class="btn">Send</button>
       </div>
 
       <script>
@@ -103,6 +106,7 @@
           document.getElementById('character-send').addEventListener('click', sendCharacter);
           document.getElementById('clear-terminal').addEventListener('click', function() {term.display(null);});
           document.getElementById('toggle-echo').addEventListener('click', toggleEcho);
+          document.getElementById('send-text').addEventListener('click', sendText);
         
           function sendCharacter() {
               if (writer && writer.write) {
@@ -115,6 +119,12 @@
               }
           }
 
+          function sendText() {
+               if (writer && writer.write) {
+                  writer.write(document.getElementById('text-to-send').value;
+              }             
+          }
+        
           function toggleEcho() {
               document.getElementById('toggle-echo').innerHTML = (term.echo.keys ? 'En' : 'Dis') + 'able Echo';
               term.echo.keys = !term.echo.keys;
@@ -198,8 +208,13 @@
         
           term.display('Any characters that are recieved by the browser from a connected \r' +
                        'serial device will be displayed in this terminal. \r\r' +
-                       'Click "Connect" below to connect to a serial device. To send characters from\r' +
-                       'this terminal to the connected device, simply click me and begin typing.\r\r');
+                       'To send characters from this terminal to the connected device,\r' +
+                       'simply click me and begin typing.\r\r'
+                       'Fields and Buttons:\r' +
+                       'Connect - connect to a serial device.\r' +
+                       'Send Character - Type decimal ASCII codes (comma separated) into the input and click to send.\r' +
+                       'Clear - clear the terminal.\r' +
+                       'Send Text - sends text typed into the input directly to the serial device.');
       </script>
   </body>
 </html>
