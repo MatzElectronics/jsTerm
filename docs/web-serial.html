@@ -74,11 +74,11 @@
       <div id="terminal-container">
           <div id="terminal"></div>
           <button id="connect-serial" class="btn">Connect</button>
-          <input id="baudrate-input" class="input-box" value="115200" />
+          <input id="baudrate-input" class="input-box" style="width: 120px;" value="115200" />
           <span id="baudrate-display" style="display:none;"></span>
           &nbsp;&nbsp;
           <button id="character-send" class="btn">Send ASCII</button>
-          <input id="character-input" class="input-box" style="width: 100px;" value="3" />
+          <input id="character-input" class="input-box" style="width: 80px;" value="3" />
           &nbsp;&nbsp;
           <button id="clear-terminal" class="btn">Clear</button>
           <button id="toggle-echo" class="btn">Disable Echo</button>
@@ -117,7 +117,7 @@
 
           function toggleEcho() {
               document.getElementById('toggle-echo').innerHTML = (term.echo.keys ? 'En' : 'Dis') + 'able Echo';
-              term.echo.keys != term.echo.keys;
+              term.echo.keys = !term.echo.keys;
           }
 
           async function connect(baud) {
