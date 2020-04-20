@@ -107,7 +107,7 @@
                   let chars = document.getElementById('character-input').value.split(',')
                   for (let i = 0; i < chars.length; i++) {
                       if (chars[i] && Number(chars[i]) !== isNaN) {
-                          writer.write(String.charCodeFrom(Number(chars[i])));
+                          writer.write(String.fromCharCode(Number(chars[i])));
                       }
                   }
               }
