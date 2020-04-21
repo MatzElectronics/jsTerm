@@ -710,6 +710,24 @@ class Uterm {
             this.element.blur();
         }
     }
+
+     /**
+     * @function setKeyboardEcho
+     * @param echoEnabled enables keyboard echoing in the terminal when set to true.
+     * @description sets the keyboard echo.
+     */
+    setKeyboardEcho(echoEnabled) {
+        this.echo.keys = (echoEnabled ? true : false);  
+    }
+
+     /**
+     * @function getKeyboardEcho
+     * @description returns true if keyboard echoing is enabled, false if not.
+     */
+    getKeyboardEcho() {
+        return this.echo.keys;  
+    }
+
 }
 
 
@@ -720,6 +738,7 @@ class TerminalOptions {
     /**
      * @param {boolean} echoKeys optional- if set to true, echo keys typed into the terminal.  Default is true.
      * @param {boolean} trapEchos optional - if set to true, trap and do not display characters echoed by the device.  Default is false.
+     * @param {boolean} trapCRLF optional - if set to true, only display a single line-feed when a carriage-return+line-feed (CRLF) is received.  Default is true.
      * @param {boolean} scrollToCursor optional - if set to true, automatically scroll to the cursor's location.  Only applies to the vertical scroll.  Default is true.
      * @param {array}  extendedAsciiMap optional - an array of 127 characters mapped to the 127 extended ASCII characters (ASCII 128-255).  A default set of unicode characters is available if not provided.
      * @param {number} charactersWide optional - number of characters wide the terminal should display in a single line before wrapping to the next line.  Default is 256.
@@ -728,19 +747,19 @@ class TerminalOptions {
      * @param {string} overrunWarningText optional - text to display if the browser is unable to keep up with the display of incoming characters.  A default warning in American English is used if none is provided.
      * @param {string} warningDivClassName optional - CSS class to apply to the overrun warning element.  A default Bootstrap-v3-like 'danger' class is used if none is provided.
      */
-    constructor(
-        echoKeys, trapEchos, scrollToCursor, extendedAsciiMap,
-        charactersWide, tabSpacing, tabIndex,overrunWarningText,
-        warningDivClassName) {
-
-        this.echoKeys = echoKeys;
-        this.trapEchos = trapEchos;
-        this.scrollToCursor = scrollToCursor;
-        this.extendedAsciiMap = extendedAsciiMap;
-        this.charactersWide = charactersWide;
-        this.tabSpacing = tabSpacing;
-        this.tabIndex = tabIndex;
-        this.overrunWarningText = overrunWarningText;
-        this.warningDivClassName = warningDivClassName;
+    constructor (
+        echoKeys, trapEchos, trapCRLF, scrollToCursor,
+        extendedAsciiMap, charactersWide, tabSpacing, tabIndex,
+        overrunWarningText, warningDivClassName) {
+            this.echoKeys = echoKeys;
+            this.trapEchos = trapEchos;
+            this.trapCRLF = trapCRLF;
+            this.scrollToCursor = scrollToCursor;
+            this.extendedAsciiMap = extendedAsciiMap;
+            this.charactersWide = charactersWide;
+            this.tabSpacing = tabSpacing;
+            this.tabIndex = tabIndex;
+            this.overrunWarningText = overrunWarningText;
+            this.warningDivClassName = warningDivClassName;
         }
 }
