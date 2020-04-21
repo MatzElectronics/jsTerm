@@ -45,7 +45,9 @@ class Uterm {
         this.echo = {
             keys: true,
             trap: false,
-            buffer: []
+            buffer: [],
+            trapCRLF: true,
+            lastChar: null
         };
         this.cursor = {
             x: 0,            // horizontal position
@@ -95,6 +97,9 @@ class Uterm {
             }
             if (options.tabSpacing && !isNaN(options.tabSpacing) && options.tabSpacing > 1) {
                 this.size.tabSpacing = options.tabSpacing;
+            }
+            if (options.trapCRLF) {
+                this.echo.trapCRLF = options.trapCRLF;
             }
         }
 
@@ -194,13 +199,13 @@ class Uterm {
         if (!document.getElementById('term-beep_')) {
             // add the terminal beep this.sound to the end of the HTML body.
             let sound      = document.createElement('audio');
-            //this.sound.style.display = 'none';
+            sound.style.display = 'none';
             sound.id       = 'term-beep_';
 
             // If present, the browser will offer controls to allow the user
             // to control audio playback, including volume, seeking, and
             // pause/resume playback.
-            sound.controls = true;
+            sound.controls = false;
 
             sound.src      = 'data:audio/wav;base64,UklGRrQJAABXQVZFZm10IBAAAAABAAIAESsAACJWAAACAAgATElTVBoAAABJTkZPSVNGVA4AAABMYXZmNTguMjAuMTAwAGRhdGFuCQAAg4OqqrCwiYlfX0lJbm6Wlre3m5tyckpKW1uEhK6ura2Dg1lZS0t0dJyct7eUlGxsSUlhYYqKsrKnp35+U1NQUHl5o6O1tY6OZmZHR2hokJC2tqGheHhPT1VVf3+pqbGxiYlgYElJbW2Vlbe3m5tzc0tLWlqEhK6urq6EhFpaS0tzc5ubt7eVlW1tSUlgYImJsrKoqH5+VFRPT3l5oqK1tY+PZ2dHR2dnj4+1taKieXlPT1RUfn6oqLKyiYlgYElJbW2UlLe3nJx0dEtLWVmDg62trq6EhFtbSkpycpubt7eWlm5uSUlgYIiIsbGpqX9/VVVPT3h4oaG2tpCQaGhHR2Zmjo61taOjeXlQUFNTfn6np7KyiophYUlJbGyUlLe3nJx1dUxMWVmCgqysr6+FhVxcSkpycpqat7eXl29vSUlfX4iIsbGpqYCAVlZOTnd3oKC2tpCQaGhISGVljY21taOjenpQUFNTfX2mprOzi4tiYkhIa2uUlLe3nZ10dExMWVmBgaysr6+GhlxcSkpxcZmZuLiXl29vSUleXoeHsLCqqoCAVlZOTnd3n5+2tpGRaWlISGRkjY21taSke3tRUVJSfHymprS0i4tjY0hIa2uTk7a2np51dU1NWFiCgqysr6+Ghl1dSkpwcJiYuLiYmHBwSkpdXYaGsLCrq4GBV1dNTXZ2n5+2tpKSampISGRkjIy0tKWle3tRUVFRe3ulpbS0jIxkZEhIamqSkra2n592dk1NV1eBgaursLCGhl1dSkpwcJeXuLiZmXFxSkpcXIaGr6+srIGBWFhNTXV1np62tpOTa2tISGNji4u0tKamfHxSUlFRe3ukpLW1jY1kZEhIaWmRkba2n593d05OVlaAgKqqsLCHh15eSUlvb5eXuLiZmXJySkpcXIWFr6+srIKCWVlMTHR0nZ23t5SUa2tISGJii4uzs6amfX1TU1BQenqjo7W1jY1lZUhIaGiQkLa2oKB3d05OVlaAgKmpsbGIiF9fSUlvb5eXt7eamnJySkpbW4SErq6trYODWVlLS3R0nJy3t5SUbGxJSWFhioqysqenfn5TU1BQeXmjo7W1jo5mZkdHaGiQkLa2oaF4eE9PVVV/f6mpsbGIiGBgSUlubpaWt7ebm3JySkpbW4SErq6trYSEWlpLS3Nzm5u3t5WVbW1JSWBgiYmysqiofn5UVE9PeXmiorW1j49nZ0dHZ2ePj7W1oqJ5eU9PVFR+fqiosrKJiWBgSUltbZWVt7ebm3NzS0taWoSErq6uroODWlpLS3Jym5u3t5aWbm5JSWBgiIixsampf39VVU9PeHihoba2kJBoaEdHZmaOjrW1o6N5eVBQU1N+fqensrKKimFhSUlsbJSUt7ecnHR0S0tZWYODra2uroSEW1tKSnJympq4uJeXb29JSV9fiIixsampgIBWVk5Od3egoLa2kJBoaEhIZWWNjbW1o6N6elBQU1N9faams7OLi2JiSEhra5SUt7ednXR0TExZWYKCrKyvr4WFXFxKSnJympq3t5eXb29JSV5eh4ewsKqqgIBWVk5Od3efn7a2kZFpaUhIZGSNjbW1pKR7e1FRUlJ8fKamtLSLi2NjSEhra5OTtraennV1TU1YWIGBrKyvr4aGXFxKSnFxmZm4uJeXb29JSV5eh4ewsKurgYFXV01Ndnafn7a2kpJqakhIZGSMjLS0paV7e1FRUVF7e6WltLSMjGRkSEhqapKStrafn3Z2TU1XV4GBq6uwsIaGXV1KSnBwmJi4uJiYcHBKSl1dhoawsKurgYFXV0xMdXWenra2k5Nra0hIY2OLi7S0pqZ8fFJSUVF7e6SktbWNjWRkSEhpaZGRtrafn3d3Tk5WVoCAqqqwsIeHXl5JSW9vl5e4uJmZcXFKSlxchoavr6ysgYFYWExMdXWenre3lJRra0hIYmKLi7OzpqZ9fVNTUFB6eqOjtbWNjWVlSEhoaJCQtragoHd3Tk5WVoCAqamxsYiIX19JSW9vl5e3t5qacnJKSlxchYWvr6ysgoJZWUxMdHSdnbe3lJRsbEhIYWGKirOzp6d+flNTUFB5eaOjtbWOjmZmR0doaJCQtrahoXh4T09VVX9/qamxsYiIYGBJSW5ulpa3t5ubcnJKSltbhISurq2tg4NZWUtLdHScnLe3lJRsbElJYWGKirKyqKh+flRUT095eaKitbWPj2dnR0dnZ4+PtbWionl5T09UVH5+qKiysomJYWFKSm1tlJS2tpubdHRMTFtbg4Otra2tg4NbW0xMdHSbm7a2lJRtbUpKYWGJibGxp6d+flVVUFB4eKCgtbWPj2hoSEhnZ46OtbWionl5UVFUVH5+pqaysomJYmJJSW1tlJS2tpubdHRMTFpag4OsrK2thIRcXEtLc3Oamre3lZVubkpKYGCIiLGxqKh/f1ZWT094eKCgtbWQkGlpSEhmZo2NtLSjo3p6UVFTU319pqaysoqKY2NJSWxsk5O2tpycdXVNTVlZgoKsrK6uhYVcXEtLcnKZmbe3lpZvb0pKYGCIiLCwqal/f1ZWT093d5+ftbWQkGpqSEhlZYyMtLSjo3t7UlJTU3x8paWzs4uLZGRJSWtrkpK2tp2ddnZNTVlZgYGrq6+vhoZdXUpKcXGYmLe3l5dwcEpKX1+Hh7CwqamAgFdXTk53d5+ftbWRkWpqSEhlZYyMs7OkpHx8UlJSUnx8pKSzs4uLZGRJSWtrkpK1tZ6ednZOTlhYgYGqqq+vhoZeXkpKcXGXl7e3l5dxcUpKXl6Ghq+vqqqBgVhYTk52dp6etbWRkWtrSUlkZIuLs7OkpHx8U1NSUnt7o6O0tIyMZWVISGpqkZG1tZ+fd3dOTldXgICpqbCwh4dfX0pKcHCXl7e3mJhxcUpKXV2Ghq+vq6uBgVlZTU12dp2dtraSkmtrSUlkZIuLs7OlpXx8U1NSUnt7o6O0tI2NZmZISGlpkJC1tZ+fd3dPT1ZWgICpqbCwiIhgYEpKb2+Wlre3mZlycktLXFyFha6uq6uCgllZTU11dZyctraTk2xsSUljY4qKsrKlpX19VFRRUXp6o6O0tI2NZ2dISGhoj4+1taCgeHhQUFZWf3+oqLCwiIhgYEpKbm6Vlba2mppzc0tLXFyEhK2trKyDg1paTEx0dJubtraUlG1tSkpiYomJsbGmpn5+VVVRUXp6np6rq4qKcHBhYXV1hYWOjoaGfn4=';
             sound.type     = 'audio/wav';
@@ -424,9 +429,12 @@ class Uterm {
                         }
                         // fall through
                     case 13:  // Carriage Return
-                        // fall through
-                    case 10:  // Line Feed
                         this._changeCursor(0, 1);
+                        break;
+                    case 10:  // Line Feed
+                        if (!(this.echo.trapCRLF && this.echo.lastChar === 13)) {
+                            this._changeCursor(0, 1);
+                        }
                         break;
                     case 9:   // Tab (default 5-character spacing)
                         j = 5 - (this.cursor.x) % this.size.tabSpacing;
@@ -496,6 +504,7 @@ class Uterm {
                         this._changeCursor(1, 0);
                         break;
                 }
+                this.echo.lastChar = c;
         }
     
         // If the character was not used to define a new cursor 
@@ -701,6 +710,24 @@ class Uterm {
             this.element.blur();
         }
     }
+
+     /**
+     * @function setKeyboardEcho
+     * @param echoEnabled enables keyboard echoing in the terminal when set to true.
+     * @description sets the keyboard echo.
+     */
+    setKeyboardEcho(echoEnabled) {
+        this.echo.keys = (echoEnabled ? true : false);  
+    }
+
+     /**
+     * @function getKeyboardEcho
+     * @description returns true if keyboard echoing is enabled, false if not.
+     */
+    getKeyboardEcho() {
+        return this.echo.keys;  
+    }
+
 }
 
 
@@ -711,6 +738,7 @@ class TerminalOptions {
     /**
      * @param {boolean} echoKeys optional- if set to true, echo keys typed into the terminal.  Default is true.
      * @param {boolean} trapEchos optional - if set to true, trap and do not display characters echoed by the device.  Default is false.
+     * @param {boolean} trapCRLF optional - if set to true, only display a single line-feed when a carriage-return+line-feed (CRLF) is received.  Default is true.
      * @param {boolean} scrollToCursor optional - if set to true, automatically scroll to the cursor's location.  Only applies to the vertical scroll.  Default is true.
      * @param {array}  extendedAsciiMap optional - an array of 127 characters mapped to the 127 extended ASCII characters (ASCII 128-255).  A default set of unicode characters is available if not provided.
      * @param {number} charactersWide optional - number of characters wide the terminal should display in a single line before wrapping to the next line.  Default is 256.
@@ -719,19 +747,19 @@ class TerminalOptions {
      * @param {string} overrunWarningText optional - text to display if the browser is unable to keep up with the display of incoming characters.  A default warning in American English is used if none is provided.
      * @param {string} warningDivClassName optional - CSS class to apply to the overrun warning element.  A default Bootstrap-v3-like 'danger' class is used if none is provided.
      */
-    constructor(
-        echoKeys, trapEchos, scrollToCursor, extendedAsciiMap,
-        charactersWide, tabSpacing, tabIndex,overrunWarningText,
-        warningDivClassName) {
-
-        this.echoKeys = echoKeys;
-        this.trapEchos = trapEchos;
-        this.scrollToCursor = scrollToCursor;
-        this.extendedAsciiMap = extendedAsciiMap;
-        this.charactersWide = charactersWide;
-        this.tabSpacing = tabSpacing;
-        this.tabIndex = tabIndex;
-        this.overrunWarningText = overrunWarningText;
-        this.warningDivClassName = warningDivClassName;
+    constructor (
+        echoKeys, trapEchos, trapCRLF, scrollToCursor,
+        extendedAsciiMap, charactersWide, tabSpacing, tabIndex,
+        overrunWarningText, warningDivClassName) {
+            this.echoKeys = echoKeys;
+            this.trapEchos = trapEchos;
+            this.trapCRLF = trapCRLF;
+            this.scrollToCursor = scrollToCursor;
+            this.extendedAsciiMap = extendedAsciiMap;
+            this.charactersWide = charactersWide;
+            this.tabSpacing = tabSpacing;
+            this.tabIndex = tabIndex;
+            this.overrunWarningText = overrunWarningText;
+            this.warningDivClassName = warningDivClassName;
         }
 }
