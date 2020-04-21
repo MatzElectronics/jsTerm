@@ -87,8 +87,8 @@
           <button id="toggle-echo" class="btn right-side">Disable Echo</button>
           <br>
           <input id="text-to-send" class="input-box" placeholder="text to send..." style="margin-left: 10px; width: calc(100% - 250px);">
-          <button id="send-text-cr" class="btn">Send+CR</button>
-          <button id="send-text" class="btn">Send</button>
+          <button id="send-text right-side" class="btn">Send</button>
+          <button id="send-text-cr right-side" class="btn">Send+CR</button>
       </div>
 
       <script>
@@ -131,8 +131,8 @@
           }
         
           function toggleEcho() {
-              document.getElementById('toggle-echo').innerHTML = (term.echo.keys ? 'En' : 'Dis') + 'able Echo';
-              term.echo.keys = !term.echo.keys;
+              document.getElementById('toggle-echo').innerHTML = (term.getKeyboardEcho() ? 'En' : 'Dis') + 'able Echo';
+              term.setKeyboardEcho(!term.getKeyboardEcho());
           }
 
           async function connect(baud) {
