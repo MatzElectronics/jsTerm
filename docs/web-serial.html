@@ -37,6 +37,11 @@
               background-color: rgba(255,255,255,0.4);
               outline: none;
           }     
+        
+          #text-to-send {
+              margin-left: 10px; 
+              width: calc(100% - 250px);
+          }
 
           .btn {
               font-size: 14px;
@@ -86,9 +91,9 @@
           <button id="clear-terminal" class="btn right-side">Clear</button>
           <button id="toggle-echo" class="btn right-side">Disable Echo</button>
           <br>
-          <input id="text-to-send" class="input-box" placeholder="text to send..." style="margin-left: 10px; width: calc(100% - 250px);">
-          <button id="send-text right-side" class="btn">Send</button>
-          <button id="send-text-cr right-side" class="btn">Send+CR</button>
+          <input id="text-to-send" class="input-box" placeholder="text to send...">
+          <button id="send-text" class="btn right-side">Send</button>
+          <button id="send-text-cr" class="btn right-side">Send+CR</button>
       </div>
 
       <script>
