@@ -129,58 +129,58 @@ class Uterm {
 
         // set the scrolling and text alignment
         let sheet = window.document.styleSheets[0];
-        let propTermCSStext;
-        propTermCSStext =  '.propTerm_ {';
-        propTermCSStext += 'vertical-align: text-top;';
-        propTermCSStext += 'overflow-y: scroll;';
-        propTermCSStext += 'overflow-x: scroll;';
-        propTermCSStext += '}';
-        sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+        let uTermCSStext;
+        uTermCSStext =  '.uTerm_ {';
+        uTermCSStext += 'vertical-align: text-top;';
+        uTermCSStext += 'overflow-y: scroll;';
+        uTermCSStext += 'overflow-x: scroll;';
+        uTermCSStext += '}';
+        sheet.insertRule(uTermCSStext, sheet.cssRules.length);
 
         // remove the focus ring (since the cursor indicates focus)
         sheet = window.document.styleSheets[0];
-        propTermCSStext =  '.propTerm_:focus {';
-        propTermCSStext += 'outline-width: 0;';
-        propTermCSStext += '}';
-        sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+        uTermCSStext =  '.uTerm_:focus {';
+        uTermCSStext += 'outline-width: 0;';
+        uTermCSStext += '}';
+        sheet.insertRule(uTermCSStext, sheet.cssRules.length);
         
         // create a visual-beep animation class that inverts colors
         sheet = window.document.styleSheets[0];
-        propTermCSStext =  '.visual-beep_ {';
-        propTermCSStext += 'animation-name: vbeep_;';
-        propTermCSStext += 'animation-duration: .25s;';
-        propTermCSStext += '}';
-        sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+        uTermCSStext =  '.visual-beep_ {';
+        uTermCSStext += 'animation-name: vbeep_;';
+        uTermCSStext += 'animation-duration: .25s;';
+        uTermCSStext += '}';
+        sheet.insertRule(uTermCSStext, sheet.cssRules.length);
         
         // provide animation keyframes for the visual beep class
         sheet = window.document.styleSheets[0];
-        propTermCSStext =  '@keyframes vbeep_ {';
-        propTermCSStext += '0% {';
-        propTermCSStext += 'background: ' + terminalTextColor + ';';
-        propTermCSStext += 'color: ' + terminalBkgColor + ';';
-        propTermCSStext += '}';
-        propTermCSStext += '100% {';
-        propTermCSStext += 'background: ' + terminalBkgColor + ';';
-        propTermCSStext += 'color: ' + terminalTextColor + ';';
-        propTermCSStext += '}';
-        propTermCSStext += '}';
-        sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+        uTermCSStext =  '@keyframes vbeep_ {';
+        uTermCSStext += '0% {';
+        uTermCSStext += 'background: ' + terminalTextColor + ';';
+        uTermCSStext += 'color: ' + terminalBkgColor + ';';
+        uTermCSStext += '}';
+        uTermCSStext += '100% {';
+        uTermCSStext += 'background: ' + terminalBkgColor + ';';
+        uTermCSStext += 'color: ' + terminalTextColor + ';';
+        uTermCSStext += '}';
+        uTermCSStext += '}';
+        sheet.insertRule(uTermCSStext, sheet.cssRules.length);
 
         // Add a default class for the warning text box
         sheet = window.document.styleSheets[0];
-        propTermCSStext =  '.warning-text_ {';
-        propTermCSStext += 'font-size: 11px;';
-        propTermCSStext += 'background-color: #f2dede;';
-        propTermCSStext += 'border: 1px solid rgb(235, 204, 209);';
-        propTermCSStext += 'border-radius: 4px;';
-        propTermCSStext += 'margin-bottom: 5px;';
-        propTermCSStext += 'padding: 3px;';
-        propTermCSStext += 'color:rgb(169, 68, 66);';
-        propTermCSStext += '}';
-        sheet.insertRule(propTermCSStext, sheet.cssRules.length);
+        uTermCSStext =  '.warning-text_ {';
+        uTermCSStext += 'font-size: 11px;';
+        uTermCSStext += 'background-color: #f2dede;';
+        uTermCSStext += 'border: 1px solid rgb(235, 204, 209);';
+        uTermCSStext += 'border-radius: 4px;';
+        uTermCSStext += 'margin-bottom: 5px;';
+        uTermCSStext += 'padding: 3px;';
+        uTermCSStext += 'color:rgb(169, 68, 66);';
+        uTermCSStext += '}';
+        sheet.insertRule(uTermCSStext, sheet.cssRules.length);
 
-        // add the propTerm_ class to the element
-        this.element.classList.add("propTerm_");
+        // add the uTerm_ class to the element
+        this.element.classList.add("uTerm_");
 
         // set the tabindex of the HTML element to make it editable.
         let tabIndex = 1;
