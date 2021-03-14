@@ -145,7 +145,7 @@
               port = await navigator.serial.requestPort();
               // - Wait for the port to open.
               await port.open({
-                  baudrate: baud
+                  baudRate: baud
               });
 
               let decoder = new TextDecoderStream();
